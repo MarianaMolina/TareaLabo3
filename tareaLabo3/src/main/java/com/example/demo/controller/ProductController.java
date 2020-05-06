@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,12 +55,27 @@ public class ProductController {
 		return mav;
 	}
 	
-	@GetMapping("/validar")
-	public ModelAndView validar() {
+	@GetMapping("/listado")
+	public ModelAndView listado() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("resultado");
 		mav.addObject("productList", this.products);
 		return mav;
+	}
+	
+	
+	@GetMapping("/validar")
+	public ModelAndView validar(Product product, BindingResult result) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(product.getCantidad().equals(this.products)) {
+			mav.setViewName("comprar");
+			return mav;
+		}
+		else {
+			mav.setViewName("error");
+			return mav;
+		}
 	}
 		
 }
